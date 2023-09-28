@@ -1,9 +1,11 @@
-const { DataTypes } = require('sequelize/types');
+const { DataTypes } = require('sequelize');
 
 module.exports = (Sequelize) => {
-    sequelize.define('Movies',{
+    sequelize.define('Movie',{
         id:{
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            autoincrement: true,
             primaryKey: true,
         },
         title:{

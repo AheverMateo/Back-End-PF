@@ -6,3 +6,4 @@ const routerLogin = Router();
 routerLogin.get("/")
 routerLogin.post("/")
 
+module.exports = { routerLogin };
