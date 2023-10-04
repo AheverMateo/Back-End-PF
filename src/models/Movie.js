@@ -15,6 +15,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        trailer:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         description:{
             type: DataTypes.TEXT,
             allowNull: true,
@@ -35,6 +39,11 @@ module.exports = (sequelize) => {
             type: DataTypes.JSONB,
             allowNull: false,
         },
+        disabled:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false
+        }
 
     },
     {freezeTableName: true, timesStamp: true}
