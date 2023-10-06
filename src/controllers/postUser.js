@@ -18,7 +18,7 @@ const postUser = async (req, res) => {
 
         const user = await User.create({ email, password: hashedPassword, name, provider: provider ? provider : "local" })
 
-        const {id} = newUser.dataValues;
+        const {id} = user.dataValues;
          const token = jwt.sign({id}, JWT_SECRET )
 
 
