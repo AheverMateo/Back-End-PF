@@ -17,18 +17,13 @@ const postUser = async (req, res) => {
 
         if (await User.findOne({ where: { email: email } })) throw new Error('Existing user');
 
-        const newUser = await User.create({ email, password: hashedPassword, name, provider: provider ? provider : "local" })
-        
-        const emailAddress = email;
-        const message = `Hi ${name}! Thank you for registering to Nonflix!`;
-        const subject = "Nonflix Registration"
-        await sendEmailNotification(emailAddress, message, subject);
+        const user = await User.create({ email, password: hashedPassword, name, provider: provider ? provider : "local" })
 
-        const {id} = newUser.dataValues;
+        const {id} = user.dataValues;
          const token = jwt.sign({id}, JWT_SECRET )
 
 
-        res.status(200).json({newUser, token})
+        res.status(200).json({user, token})
     } catch (error) {
         res.status(404).json({ error: error.message })
 
