@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../db')
 const { JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
+const {sendEmailNotification} = require("../utils/sendEmailNotification");
+const {messageHtml} = require("../utils/htmlEmailNotification")
 
 const postUser = async (req, res) => {
     try {
@@ -17,6 +19,9 @@ const postUser = async (req, res) => {
         if (await User.findOne({ where: { email: email } })) throw new Error('Existing user');
 
         const user = await User.create({ email, password: hashedPassword, name, provider: provider ? provider : "local" })
+
+        const subject = "Nonflix Registration";
+        await sendEmailNotification(email, subject, messageHtml(name));
 
         const {id} = user.dataValues;
          const token = jwt.sign({id}, JWT_SECRET )
