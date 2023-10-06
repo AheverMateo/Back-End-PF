@@ -1,6 +1,4 @@
 const { Movie, Genre } = require("../db");
-const { QueryTypes } = require("sequelize");
-const { Sequelize } = require("sequelize");
 
 // EndPoint: http://localhost:3001/Nonflix/movies/filter/year/:number  example:2023
 const getFilterYear = async (req, res) => {
