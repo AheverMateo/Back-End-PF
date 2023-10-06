@@ -7,32 +7,34 @@ const jwt = require('jsonwebtoken');
 
 
 
-const getUser = async (req, res) => {
+const loginUser = async (req, res) => {
     try {
-        const { email , password } = req.query
-
-        const user = await User.findOne({where: {email,}})
+        const { email , password } = req.body;
         
-        if(!user) throw new Error('The user is not registered')
-        
+        const user = await User.findOne({where: {email}})
+        console.log(user)
         
         const validatePass = await bcrypt.compare(password, user.dataValues.password)
-        console.log(validatePass)
+        
         const {id} = user.dataValues;
-
         const token = jwt.sign({id}, JWT_SECRET )
 
+        if(!user) throw new Error('The user is not registered')
 
-        
         validatePass
-        ? res.status(200).json({user, token})
+        ? res.status(200).json({
+            id: user.id,
+            name: user.name,
+            email: user.email, 
+            token
+        })
         : res.status(200).json("Incorrect password")
         
 
     } catch (error) {
-        res.status(404).json({error: error.message})
+        res.status(401).json({error: error.message})
         
     }
 }
 
-module.exports = {getUser}
+module.exports = {loginUser}
