@@ -11,16 +11,19 @@ const getUser = async (req, res) => {
     try {
         const { email , password } = req.query
 
+        const user = await User.findOne({where: {email,}})
+        
+        if(!user) throw new Error('The user is not registered')
+        
+        
         const validatePass = await bcrypt.compare(password, user.dataValues.password)
-
-        const user = await User.findOne({where: {email}})
-        console.log(user);
-
+        console.log(validatePass)
         const {id} = user.dataValues;
+
         const token = jwt.sign({id}, JWT_SECRET )
 
-        if(!user) throw new Error('The user is not registered')
 
+        
         validatePass
         ? res.status(200).json({user, token})
         : res.status(200).json("Incorrect password")
