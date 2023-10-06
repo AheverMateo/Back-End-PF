@@ -20,7 +20,7 @@ const verifyToken = async (req, res, next) => {
 
 const routerLogin = Router();
 
-routerLogin.put("/update", putUser )
+routerLogin.put("/update",verifyToken, putUser )
 routerLogin.post("/", postUser )
 routerLogin.get("/", getUser )
 
