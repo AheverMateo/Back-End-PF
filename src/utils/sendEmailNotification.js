@@ -23,7 +23,7 @@ const sendEmailNotification = async (email, subject, messageHtml) => {
 
     } catch (error) {
         console.error(error.message);
-        throw new Error("Could not send email");
+        //throw new Error("Could not send email");
     }
 };
 module.exports = {sendEmailNotification};
