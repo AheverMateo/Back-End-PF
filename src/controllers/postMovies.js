@@ -3,18 +3,17 @@ const { Movie, Genre } = require("../db")
 
 const postMovies = async (req, res) => {
     try {
-        const { title, duration, trailer, description, image, year, language, torrent, genres } = req.body;
-
-
-        if (!title || !duration || !image || !year || !language || torrent.length === 0 || genres.length === 0) {
+        const { title, duration, trailer, description, image, year, language, torrent, genre } = req.body;
+        
+        if (!title || !duration || !image || !year || !language || torrent.length === 0 || genre.length === 0) {
              throw new Error(("Incomplete information!"))
         }
         const checkExist = await Movie.findOne({where: {title,duration, image, year}})
 
         if(checkExist) {
-            return res.status(200).json("The movie already exists")
+            throw new Error("The movie already exists")
         }
-
+        
         const newMovie = await Movie.create({
                 title,
                 duration,
@@ -25,15 +24,15 @@ const postMovies = async (req, res) => {
                 language,
                 torrent
             })
-
-        for(const genre of genres) {
+            
+        for(const gen of genre) {
             const newGenre = await Genre.findOrCreate({where:{
-                id:genre,
-                name:genre
+                id:gen,
+                name:gen
             }})
             await newMovie.addGenre(newGenre[0].dataValues.id)
         } 
-
+        
         const IncludeGenre = await Movie.findByPk(newMovie.dataValues.id,{
                     include: [
                         {
@@ -43,7 +42,7 @@ const postMovies = async (req, res) => {
                         }
                     ]
                 })
-
+                
         res.status(200).json(IncludeGenre)
 
     } catch (error) {
