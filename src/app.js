@@ -22,6 +22,10 @@ server.use((req, res, next) => {
   next();
 });
 
+server.options('/movies', (req, res) => {
+  res.sendStatus(200); // Respond with a 200 OK for preflight OPTIONS requests
+});
+
 server.use("/Nonflix",router);
 
 // Error catching endware.

@@ -28,6 +28,10 @@ module.exports = (sequelize) => {
             defaultValue: false,
             allowNull: false,
         },
+        image:{
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     },
     {freezeTableName: true, timesStamp: true}
     );
