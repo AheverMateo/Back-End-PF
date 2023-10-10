@@ -4,7 +4,8 @@ const { getByName } = require('../controllers/getByName');
 const { getDetail } = require('../controllers/getDetail');
 const { getFilterGenre } = require('../controllers/getFilterGenre');
 
-const { getFilterYear, getFilterLanguage, filters } = require('../controllers/getFilters');
+
+ const { getFilterYear, getFilterLanguage, filters } = require('../controllers/getFilters');
 const { getGenre } = require('../controllers/getGenre');
 const { postMovies } = require('../controllers/postMovies');
 const { getFavs } = require('../controllers/getFavs');
@@ -24,8 +25,7 @@ routerMovies.get("/fav", getFavs)
 routerMovies.post("/fav", postFav)
 routerMovies.delete("/fav", deleteFav)
 routerMovies.get("/:id", getDetail)
-routerMovies.get("/filter/year/:number",  getFilterYear )
-routerMovies.get("/filter/language/", getFilterLanguage )
+routerMovies.get("/filters", filters )
 
 
 module.exports = routerMovies

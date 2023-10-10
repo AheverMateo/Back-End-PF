@@ -2,15 +2,16 @@
 
 const { User } = require("../db");
 const bcrypt = require("bcryptjs");
+const { log } = require("console");
 const { JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 
 const loginUser = async (req, res) => {
+    
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
-
     let validatePass, token;
 
     if (user) {
@@ -18,6 +19,7 @@ const loginUser = async (req, res) => {
       const { id } = user.dataValues;
 
       token = jwt.sign({ id }, JWT_SECRET);
+      
       if(user.dataValues.provider === 'Google'){
         res.status(200).json({
             id: user.id,

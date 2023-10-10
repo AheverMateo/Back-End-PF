@@ -4,22 +4,22 @@ const {User} = require("../db")
 
 const putUser = async (req, res) => {
     try{
-        
-    const { id, password, name } = req.body;
+    const { id, password, name, image } = req.body;
 
-    if(!id||!password||!name) {
-        throw new Error("Information is missing")
-    }
+    // if(!id||!password||!name) {
+    //     throw new Error("Information is missing")
+    // }
 
     const user = await User.findByPk(id);
-    user.name = name;
-    user.password = password;
+    if(name)user.name = name;
+    if(password) user.password = password;
+    if(image) user.image = image;
 
     const userUpdate = await user.save()
 
     res.status(200).json(userUpdate)
     } catch(error) {
-        res.status(400).json(error.message)
+        res.status(404).json(error.message)
     }
 }
 
