@@ -11,12 +11,14 @@ const { postMovies } = require('../controllers/postMovies');
 const { getFavs } = require('../controllers/getFavs');
 const { postFav } = require('../controllers/postFav');
 const { deleteFav } = require('../controllers/deleteFav');
+const { putMovie } = require('../controllers/putMovie');
 
 
 const routerMovies = Router();
 
 routerMovies.get("/", getMovies)
 routerMovies.post("/", postMovies)
+routerMovies.put("/update",  putMovie)
 routerMovies.get("/filters", filters)
 routerMovies.get('/genres', getGenre) //ruta para obtener la tabla de generos
 routerMovies.get("/filter/genre", getFilterGenre) // ruta para filtrar por genero
