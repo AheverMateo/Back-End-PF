@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
         rating:{
             type: DataTypes.INTEGER,
             allowNull: true,
-            validate: {min: 1, max: 5},
+            validate: {min: 1, max: 10},
         },
         movieId: {
             type: DataTypes.UUID,
