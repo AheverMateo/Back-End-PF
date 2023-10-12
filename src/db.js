@@ -47,7 +47,11 @@ const { Review , Movie, Shop , User, FavoriteMovie , Genre } = sequelize.models;
 Movie.belongsToMany(Shop, {through: "moviesShops"});
 Shop.belongsToMany(Movie, {through: "moviesShops"});
 User.hasMany(Shop, {foreignKey: "userShops"});
-User.hasMany(Review, {foreignKey: "userReviews"});
+
+User.hasMany(Review, {foreignKey: "userId"});
+Movie.hasMany(Review, {foreignKey: "movieId"});
+Review.belongsTo(Movie, {foreignKey: "movieId"});
+Review.belongsTo(User, {foreignKey: "userId"});
 
 User.hasMany(FavoriteMovie, {foreignKey: 'userId'});
 FavoriteMovie.belongsTo(Movie, {foreignKey: 'movieId'});
