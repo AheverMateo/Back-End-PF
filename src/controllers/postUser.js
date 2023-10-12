@@ -32,7 +32,7 @@ const postUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 8);
 
     if (!email || !hashedPassword || !name ) {
-      throw new Error("Something is missing");
+      throw new Error("Insufficient parameters");
     }
 
     const userAlreadyExists = await User.findOne({ where: { email: email } });
