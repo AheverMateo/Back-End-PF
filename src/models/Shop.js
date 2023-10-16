@@ -4,6 +4,7 @@ module.exports = (sequelize) => {
     sequelize.define('Shop',{
         id:{
             type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV1,
             primaryKey: true,
         },
         total:{
@@ -20,7 +21,7 @@ module.exports = (sequelize) => {
         },
         provider:{
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         mercadoPagoId:{
             type: DataTypes.STRING,
