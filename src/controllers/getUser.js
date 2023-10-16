@@ -17,7 +17,6 @@ const getUser = async (req, res) => {
         
         
         const validatePass = await bcrypt.compare(password, user.dataValues.password)
-        console.log(validatePass)
         const {id} = user.dataValues;
 
         const token = jwt.sign({id}, JWT_SECRET )

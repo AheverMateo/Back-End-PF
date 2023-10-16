@@ -1,35 +1,40 @@
 const mercadopago = require("mercadopago");
 require('dotenv').config()
 
-const { ACCESS_TOKEN } = process.env;
+const { Shop, Movie } = require("../db")
+
+const { ACCESS_TOKEN } = process.env
 
 mercadopago.configure({
-    access_token:ACCESS_TOKEN
+    access_token: ACCESS_TOKEN,
 })
 
 
-
 const createOrder = (req, res) => {
+    
     const { movies } = req.body
+    
     
     const items = movies.map(movie => {
         return {
+            id:movie.id,
             title: movie.title,
             quantity: 1,
             unit_price: movie.price,
-            currency_id:"ARS",
-
+            currency_id:"USD",
+            
         }
 
     });
+
     let preference = {
         items,
         back_urls:{
             success:'http://localhost:3001/Nonflix/shopping/success',
-            failure: "",
+            failure: 'http://localhost:3001/Nonflix/shopping/failure',
             pending: "" //cuando el usuario no ha pagado
         },
-        /* notification_url:'https://572e-181-117-92-240.ngrok-free.app/payment/webhook' */
+        /* notification_url: "'http://localhost:3001/Nonflix/shopping/failure" , */
         auto_return: "approved"
     }
 
@@ -38,16 +43,66 @@ const createOrder = (req, res) => {
     .catch(error => res.status(400).json({error:error.message}))
 }
 
-const success = (req, res) => {
-    res.redirect("http://localhost:5173/Home")
+const success = async (req, res) => {
+    const {status, payment_id} = req.query
+    
+    let { response } = await mercadopago.payment.findById(Number(payment_id))
+    const { additional_info, transaction_details } = response
+    
+    const repetido = await Shop.findAll({where:{mercadoPagoId: payment_id}})
+    if(!repetido.length) {
+
+        const shopDB =  await Shop.create({
+            
+            total: transaction_details.total_paid_amount, 
+            articlesQt: additional_info.items.length,
+            status: status,
+            mercadoPagoId: payment_id
+            
+        })
+        additional_info.items.forEach(async (movie) => {
+            const moviesDB = await Movie.findAll({where:{id: movie.id}})
+            await shopDB.addMovie(moviesDB)
+        });
+        
+    }
+    res.redirect(`http://localhost:5173/Home?status=${status}`)
     
 }
+const failure = (req, res) => {
+    const {status} = req.query
+    res.redirect(`http://localhost:5173/Home?status=${status}`)
+}
 
+const purchasedMovies = async (req, res) => {
+    try {
+        
+        const shopsDB = await Shop.findAll({
+            include: [
+                {
+                    model: Movie,
+                    attributes : ["id", "title", "image"],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
+        if(shopsDB.length) {
+            return res.json(shopsDB)
+        }
+        return res.send([{message:"You have not made any purchases"}])
+    } catch (error) {
+        return res.status(400).json({error:error.message}) 
+    }
+}
 
 
 
 
 module.exports ={ 
     createOrder,
-    success
+    success,
+    failure,
+    purchasedMovies
 }
