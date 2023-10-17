@@ -1,8 +1,6 @@
 const {User, Shop, Review, FavoriteMovie } = require("../db")
 
-
-
-const getUser = async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
 
         const user = await User.findAll({
@@ -24,4 +22,4 @@ const getUser = async (req, res) => {
     }
 }
 
-module.exports = {getUser}
+module.exports = {getAllUsers}
