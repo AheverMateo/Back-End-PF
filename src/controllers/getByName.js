@@ -16,8 +16,8 @@ const getByName = async (req, res) => {
               ...(year ? { year: year } : {}),
               ...(lang ? { language: lang } : {}),
             },
-          });
-        console.log(filters);
+        });
+        
         const filteredMovies = filters.filter((movie) => {
 
             if ((movie.dataValues.title).toLowerCase().includes(nametoLower)) {
