@@ -27,6 +27,7 @@ const loginUser = async (req, res) => {
             email: user.email,
             image: user.image,
             provider: user.provider,
+            admin: user.admin,
             token,
           })
       }else{
@@ -37,6 +38,7 @@ const loginUser = async (req, res) => {
           email: user.email,
           image: user.image,
           provider: user.provider,
+          admin: user.admin,
           token,
         })
       : res.status(401).json("Incorrect password");
