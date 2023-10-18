@@ -21,7 +21,7 @@ const routerMovies = Router();
 routerMovies.get("/", getMovies)
 routerMovies.post("/", postMovies)
 routerMovies.post("/review", postReview)
-routerMovies.put("/update",  putMovie)
+routerMovies.put("/update/:id",  putMovie)
 routerMovies.get("/filters", filters)
 routerMovies.get('/genres', getGenre) //ruta para obtener la tabla de generos
 routerMovies.get("/filter/genre", getFilterGenre) // ruta para filtrar por genero
