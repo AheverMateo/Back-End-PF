@@ -27,7 +27,6 @@ const loginUser = async (req, res) => {
             email: user.email,
             image: user.image,
             provider: user.provider,
-            admin: user.admin,
             token,
             admin: user.admin,
           })
@@ -39,7 +38,6 @@ const loginUser = async (req, res) => {
           email: user.email,
           image: user.image,
           provider: user.provider,
-          admin: user.admin,
           token,
           admin: user.admin,
         })
