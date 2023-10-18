@@ -30,8 +30,8 @@ const createOrder = (req, res) => {
     let preference = {
         items,
         back_urls:{
-            success:'https://front-end-pf-s6l2.vercel.app/Nonflix/shopping/success',
-            failure: 'https://front-end-pf-s6l2.vercel.app/Nonflix/shopping/failure',
+            success:'https://front-end-pf-s6l2.vercel.app/Nonflix/Home',
+            failure: 'https://front-end-pf-s6l2.vercel.app/Nonflix/Home',
             pending: "" //cuando el usuario no ha pagado
         },
         /* notification_url: "'http://localhost:3001/Nonflix/shopping/failure" , */
