@@ -30,8 +30,8 @@ const createOrder = (req, res) => {
     let preference = {
         items,
         back_urls:{
-            success:'http://localhost:3001/Nonflix/shopping/success',
-            failure: 'http://localhost:3001/Nonflix/shopping/failure',
+            success:'https://front-end-pf-s6l2.vercel.app/Nonflix/shopping/success',
+            failure: 'https://front-end-pf-s6l2.vercel.app/Nonflix/shopping/failure',
             pending: "" //cuando el usuario no ha pagado
         },
         /* notification_url: "'http://localhost:3001/Nonflix/shopping/failure" , */
@@ -66,12 +66,12 @@ const success = async (req, res) => {
         });
         
     }
-    res.redirect(`https://front-end-pf-s6l2.vercel.app/Home?status=${status}`)
+    res.redirect(`http://localhost:5173/Home?status=${status}`)
     
 }
 const failure = (req, res) => {
     const {status} = req.query
-    res.redirect(`https://front-end-pf-s6l2.vercel.app/Home?status=${status}`)
+    res.redirect(`http://localhost:5173/Home?status=${status}`)
 }
 
 const purchasedMovies = async (req, res) => {
