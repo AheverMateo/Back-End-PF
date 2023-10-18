@@ -43,8 +43,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Review , Movie, Shop , User, FavoriteMovie , Genre } = sequelize.models;
 
-Shop.belongsToMany(Movie, {through: "moviesShops", as: "movies"});
-Movie.belongsToMany(Shop, {through: "moviesShops", as: "orders"});
+Shop.belongsToMany(Movie, {through: "moviesShops"});
+Movie.belongsToMany(Shop, {through: "moviesShops"});
 
 User.hasMany(Shop);
 Shop.belongsTo(User)
