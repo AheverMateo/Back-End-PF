@@ -29,6 +29,7 @@ const loginUser = async (req, res) => {
             provider: user.provider,
             admin: user.admin,
             token,
+            admin: user.admin,
           })
       }else{
         validatePass
@@ -40,6 +41,7 @@ const loginUser = async (req, res) => {
           provider: user.provider,
           admin: user.admin,
           token,
+          admin: user.admin,
         })
       : res.status(401).json("Incorrect password");
       }
