@@ -66,12 +66,12 @@ const success = async (req, res) => {
         });
         
     }
-    res.redirect(`http://localhost:5173/Home?status=${status}`)
+    res.redirect(`https://front-end-pf-s6l2.vercel.app/Home?status=${status}`)
     
 }
 const failure = (req, res) => {
     const {status} = req.query
-    res.redirect(`http://localhost:5173/Home?status=${status}`)
+    res.redirect(`https://front-end-pf-s6l2.vercel.app/Home?status=${status}`)
 }
 
 const purchasedMovies = async (req, res) => {
