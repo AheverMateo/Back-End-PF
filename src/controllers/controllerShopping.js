@@ -3,7 +3,7 @@ const {sendEmailNotification} = require("../utils/sendEmailNotification");
 const {purchaseHtml} = require("../utils/htmlPurchaseNotification");
 require('dotenv').config()
 
-const { Shop, Movie } = require("../db")
+const { Shop, Movie, User } = require("../db")
 
 const { ACCESS_TOKEN } = process.env
 
@@ -24,7 +24,8 @@ const createOrder = (req, res) => {
             quantity: 1,
             unit_price: movie.price,
             currency_id:"USD",
-            description: email
+            description: movie.user
+            
         }
         
     });
@@ -53,15 +54,19 @@ const success = async (req, res) => {
     
     const repetido = await Shop.findAll({where:{mercadoPagoId: payment_id}})
     if(!repetido.length) {
+        const id = additional_info.items.find(movie => movie.description);
 
         const shopDB =  await Shop.create({
             
             total: transaction_details.total_paid_amount, 
             articlesQt: additional_info.items.length,
             status: status,
-            mercadoPagoId: payment_id
+            mercadoPagoId: payment_id,
+
             
         })
+        const findUser = await User.findByPk(id.description)
+        await shopDB.setUser(findUser)
         additional_info.items.forEach(async (movie) => {
             const moviesDB = await Movie.findAll({where:{id: movie.id}})
             await shopDB.addMovie(moviesDB);
