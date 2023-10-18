@@ -80,9 +80,11 @@ const failure = (req, res) => {
 }
 
 const purchasedMovies = async (req, res) => {
+    const { userId } = req.query 
     try {
+
         
-        const shopsDB = await Shop.findAll({
+        const shopsDB = await Shop.findAll({where:{UserId: userId}, 
             include: [
                 {
                     model: Movie,
@@ -91,7 +93,7 @@ const purchasedMovies = async (req, res) => {
                         attributes: []
                     },
                    
-                }
+                },
             ]
         })
         if(shopsDB.length) {
