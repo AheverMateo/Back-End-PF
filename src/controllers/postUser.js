@@ -17,7 +17,7 @@ const postUser = async (req, res) => {
       'https://res.cloudinary.com/dy8pp1s5f/image/upload/v1696821513/Nonfilx_admins/dhb7y05lwbz1envn1qwm.png'
     ]
 
-    const { email, password, name, provider } = req.body;
+    const { email, password, name, provider, admin } = req.body;
 
     let image = req.body.image; 
 
@@ -31,7 +31,7 @@ const postUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 8);
 
-    if (!email || !hashedPassword || !name ) {
+    if (!email || !hashedPassword || !name) {
       throw new Error("Insufficient parameters");
     }
 
@@ -45,7 +45,8 @@ const postUser = async (req, res) => {
         password: hashedPassword,
         name,
         provider: provider ? provider : "local",
-        image: image
+        image: image,
+        admin: admin ? admin : false
       });
 
       const subject = "Nonflix Registration";
@@ -57,7 +58,7 @@ const postUser = async (req, res) => {
       if (token) {
         res
           .status(200)
-          .json({ id: user.id, name: user.name, email: user.email, image: image ,token });
+          .json({ id: user.id, name: user.name, email: user.email, image: image, admin: user.admin, provider: user.provider ,token });
       }
     }
   } catch (error) {

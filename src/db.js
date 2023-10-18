@@ -4,10 +4,9 @@ const path = require('path');
 const { Sequelize } = require('sequelize');
 
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
-const sequelize = new Sequelize(
-   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+const sequelize = new Sequelize(DB_DEPLOY,
    {
       logging: false, // set to console.log to see the raw SQL queries
       native: false, // lets Sequelize know we can use pg-native for ~30% more speed
@@ -44,8 +43,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Review , Movie, Shop , User, FavoriteMovie , Genre } = sequelize.models;
 
-Shop.belongsToMany(Movie, {through: "moviesShops"});
-Movie.belongsToMany(Shop, {through: "moviesShops"});
+Shop.belongsToMany(Movie, {through: "moviesShops", as: "movies"});
+Movie.belongsToMany(Shop, {through: "moviesShops", as: "orders"});
 
 User.hasMany(Shop);
 Shop.belongsTo(User)
