@@ -5,7 +5,7 @@ const {User} = require("../db")
 
 const putUser = async (req, res) => {
     try{
-    const { id, password, name, image } = req.body;
+    const { id, password, name, image, active, admin } = req.body;
 
        const hashedPassword = await bcrypt.hash(password, 8);
     
@@ -17,6 +17,8 @@ const putUser = async (req, res) => {
         if(name)user.name = name;
         if(hashedPassword) user.password = hashedPassword;
         if(image) user.image = image;
+        if(active === true || active ===false) user.active = active;
+        if(admin === true || admin ===false) user.admin = admin;
         
     
         const userUpdate = await user.save()
