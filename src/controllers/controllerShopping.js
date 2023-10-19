@@ -14,7 +14,7 @@ mercadopago.configure({
 
 const createOrder = (req, res) => {
     
-    const { movies, email } = req.body
+    const { movies} = req.body
    
     
     const items = movies.map(movie => {
@@ -24,8 +24,8 @@ const createOrder = (req, res) => {
             quantity: 1,
             unit_price: movie.price,
             currency_id:"USD",
-            description: movie.user,
-            picture_url:email
+            description: movie.email,
+            category_id: movie.user
         }
         
     });
@@ -54,8 +54,7 @@ const success = async (req, res) => {
     
     const repetido = await Shop.findAll({where:{mercadoPagoId: payment_id}})
     if(!repetido.length) {
-        const id = additional_info.items.find(movie => movie.description);
-
+        const id = additional_info.items.find(movie => movie.category_id)
         const shopDB =  await Shop.create({
             
             total: transaction_details.total_paid_amount, 
@@ -65,19 +64,18 @@ const success = async (req, res) => {
 
             
         });
-        const findUser = await User.findByPk(id.description)
+        const findUser = await User.findByPk(id.category_id)
         await shopDB.setUser(findUser)
         additional_info.items.forEach(async (movie) => {
             const moviesDB = await Movie.findAll({where:{id: movie.id}})
             await shopDB.addMovie(moviesDB);
+            moviesDB.forEach( async (mov) => {
+                const subject = "Succesful Purchase"
+                await sendEmailNotification(movie.description, subject, purchaseHtml(mov.torrent[0].url))
+            })
         });
         
     };
-    additional_info.items.forEach(async (movie) => {
-        //mando un email por peli con su torrent
-        const subject = "Succesful Purchase"
-        await sendEmailNotification(movie.picture_url, subject, purchaseHtml("ACÁ VA EL STRING DEL LINK SALVA"))
-    })
     res.redirect(`http://localhost:5173/Home?status=${status}`)
     
 }
