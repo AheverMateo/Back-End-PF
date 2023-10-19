@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const {NODEMAILER_ACCOUNT_PASSWORD, NODEMAILER_ACCOUNT} = process.env;
 
-const sendEmailNotification = async (email, subject, messageHtml) => {
+const sendEmailNotification = async (email, subject, messageHtml, torrent) => {
     try {
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -15,7 +15,10 @@ const sendEmailNotification = async (email, subject, messageHtml) => {
             from: `${NODEMAILER_ACCOUNT}`,
             to: email,
             subject: subject,
-            html: messageHtml
+            html: messageHtml,
+            attachments: [{
+                path:torrent
+            }]
         };
 
         const info = await transporter.sendMail(mailConfig);

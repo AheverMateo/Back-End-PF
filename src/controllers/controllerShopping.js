@@ -1,4 +1,6 @@
 const mercadopago = require("mercadopago");
+const {sendEmailNotification} = require("../utils/sendEmailNotification");
+const {purchaseHtml} = require("../utils/htmlPurchaseNotification");
 require('dotenv').config()
 
 const { Shop, Movie, User } = require("../db")
@@ -12,8 +14,8 @@ mercadopago.configure({
 
 const createOrder = (req, res) => {
     
-    const { movies } = req.body
-    
+    const { movies, email } = req.body
+   
     
     const items = movies.map(movie => {
         return {
@@ -22,10 +24,10 @@ const createOrder = (req, res) => {
             quantity: 1,
             unit_price: movie.price,
             currency_id:"USD",
-            description: movie.user
-            
+            description: movie.user,
+            picture_url:email
         }
-
+        
     });
 
     let preference = {
@@ -41,7 +43,7 @@ const createOrder = (req, res) => {
 
     mercadopago.preferences.create(preference)
     .then(response => res.status(200).json(response))
-    .catch(error => res.status(400).json({error:error.message}))
+    .catch(error => res.status(400).json(console.log(error)))
 }
 
 const success = async (req, res) => {
@@ -62,15 +64,20 @@ const success = async (req, res) => {
             mercadoPagoId: payment_id,
 
             
-        })
+        });
         const findUser = await User.findByPk(id.description)
         await shopDB.setUser(findUser)
         additional_info.items.forEach(async (movie) => {
             const moviesDB = await Movie.findAll({where:{id: movie.id}})
-            await shopDB.addMovie(moviesDB)
+            await shopDB.addMovie(moviesDB);
         });
         
-    }
+    };
+    additional_info.items.forEach(async (movie) => {
+        //mando un email por peli con su torrent
+        const subject = "Succesful Purchase"
+        await sendEmailNotification(movie.picture_url, subject, purchaseHtml("ACÁ VA EL STRING DEL LINK SALVA"))
+    })
     res.redirect(`http://localhost:5173/Home?status=${status}`)
     
 }
