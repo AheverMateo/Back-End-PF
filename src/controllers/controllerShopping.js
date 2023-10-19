@@ -24,8 +24,8 @@ const createOrder = (req, res) => {
             quantity: 1,
             unit_price: movie.price,
             currency_id:"USD",
-            description: movie.user
-            
+            description: movie.user,
+            picture_url:email
         }
         
     });
@@ -64,7 +64,7 @@ const success = async (req, res) => {
             mercadoPagoId: payment_id,
 
             
-        })
+        });
         const findUser = await User.findByPk(id.description)
         await shopDB.setUser(findUser)
         additional_info.items.forEach(async (movie) => {
@@ -72,11 +72,11 @@ const success = async (req, res) => {
             await shopDB.addMovie(moviesDB);
         });
         
-    }
+    };
     additional_info.items.forEach(async (movie) => {
         //mando un email por peli con su torrent
         const subject = "Succesful Purchase"
-        await sendEmailNotification(movie.description, subject, purchaseHtml("acá iría el link si es que lo hay"))
+        await sendEmailNotification(movie.picture_url, subject, purchaseHtml("acá iría el link si es que lo hay"))
     })
     res.redirect(`http://localhost:5173/Home?status=${status}`)
     
