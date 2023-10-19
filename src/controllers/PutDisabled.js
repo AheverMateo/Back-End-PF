@@ -1,16 +1,14 @@
-//`http://localhost:3001/Nonflix/movies/update/${id}`
-
 const { Movie } = require('../db')
 
 
-const putMovie = async (req, res) => {
+const putDisabled = async (req, res) => {
     try {
-        const { id } = req.params;
-    
+
+       const { disabled, id} = req.body;
+       
 
         const movie = await Movie.findByPk(id);
-        console.log(movie);
-        await movie.update(req.body);
+        await movie.update({disabled});
         
 
         
@@ -22,4 +20,4 @@ const putMovie = async (req, res) => {
     }
 };
 
-module.exports = { putMovie }
+module.exports = { putDisabled }
