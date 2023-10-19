@@ -46,7 +46,8 @@ const postUser = async (req, res) => {
         name,
         provider: provider ? provider : "local",
         image: image,
-        admin: admin ? admin : false
+        admin: admin ? admin : false,
+        active: true
       });
 
       const subject = "Nonflix Registration";
@@ -58,7 +59,7 @@ const postUser = async (req, res) => {
       if (token) {
         res
           .status(200)
-          .json({ id: user.id, name: user.name, email: user.email, image: image, admin: user.admin, provider: user.provider ,token });
+          .json({ id: user.id, name: user.name, email: user.email, image: image, admin: user.admin, active: user.active, provider: user.provider ,token });
       }
     }
   } catch (error) {
