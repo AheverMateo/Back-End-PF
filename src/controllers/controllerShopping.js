@@ -76,12 +76,12 @@ const success = async (req, res) => {
         });
         
     };
-    res.redirect(`https://front-end-pf-zuaz-qzzkg8fac-mateos-projects.vercel.app/Home?status=${status}`)
+    res.redirect(`https://front-end-pf-zuaz-9ypzttoac-mateos-projects.vercel.app/Home?status=${status}`)
     
 }
 const failure = (req, res) => {
     const {status} = req.query
-    res.redirect(`https://front-end-pf-zuaz-qzzkg8fac-mateos-projects.vercel.app/Home?status=${status}`)
+    res.redirect(`https://front-end-pf-zuaz-9ypzttoac-mateos-projects.vercel.app/Home?status=${status}`)
 }
 
 const purchasedMovies = async (req, res) => {
