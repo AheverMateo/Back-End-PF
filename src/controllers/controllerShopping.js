@@ -76,7 +76,7 @@ const success = async (req, res) => {
     additional_info.items.forEach(async (movie) => {
         //mando un email por peli con su torrent
         const subject = "Succesful Purchase"
-        await sendEmailNotification(movie.picture_url, subject, purchaseHtml("acá iría el link si es que lo hay"))
+        await sendEmailNotification(movie.picture_url, subject, purchaseHtml("ACÁ VA EL STRING DEL LINK SALVA"))
     })
     res.redirect(`http://localhost:5173/Home?status=${status}`)
     
